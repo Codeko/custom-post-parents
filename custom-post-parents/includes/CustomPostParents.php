@@ -7,9 +7,6 @@ if (!defined('ABSPATH')) {
 if (!class_exists('CustomPostParents')) {
 
     class CustomPostParents {
-
-        private $options;
-
         public static function Instance() {
             static $inst = null;
             if ($inst === null) {
@@ -53,6 +50,15 @@ if (!class_exists('CustomPostParents')) {
 
         function rewrite_perso_posts() {
             add_rewrite_rule(
+                    '.*/([^/]+)/page/?([0-9]{1,})/?$', 'index.php?attachment=$matches[1]&paged=$matches[2]', 'bottom'
+            );
+            add_rewrite_rule(
+                    '.*/([^/]+)/feed/(feed|rdf|rss|rss2|atom)/?$', 'index.php?attachment=$matches[1]&feed=$matches[2]', 'bottom'
+            );
+            add_rewrite_rule(
+                    '.*/([^/]+)/(feed|rdf|rss|rss2|atom)/?$', 'index.php?attachment=$matches[1]&feed=$matches[2]', 'bottom'
+            );
+            add_rewrite_rule(
                     '.*/([^/]+)/?$', 'index.php?attachment=$matches[1]', 'bottom'
             );
             add_rewrite_rule(
@@ -75,13 +81,12 @@ if (!class_exists('CustomPostParents')) {
          *  Redirección de urls si varían respecto al permalink correspondiente
          */
 
-        function url_check_and_redirect() {
+        function url_check_and_redirect($query) {
             global $wp;
-
-            if (!is_home() && !is_admin()) {
+            if (!is_home() && !is_admin() && $query->is_main_query() && $query->is_singular()) {
                 $permalink = get_permalink();
                 $url = home_url(add_query_arg(array(), $wp->request)) . '/';
-                if (is_singular() && strcmp($permalink, $url) != 0) {
+                if ($permalink && strcmp($permalink, $url) != 0) {
                     wp_redirect($permalink, 301);
                 }
             }
