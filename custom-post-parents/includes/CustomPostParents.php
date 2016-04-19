@@ -22,6 +22,7 @@ if (!class_exists('CustomPostParents')) {
             add_filter('parse_query', array(&$this, 'set_array_cpt'));
             add_filter('rewrite_rules_array', array(&$this, 'clear_rewrites'));
             add_filter('register_post_type_args', array(&$this, 'update_post_types'), 10, 2);
+            add_action('the_post',array(&$this, 'reset_cpt'));
         }
 
         function update_post_types($args, $post_type ){
@@ -75,6 +76,17 @@ if (!class_exists('CustomPostParents')) {
                   $query->set('post_type', "any");
             }
             return $query;
+        }
+        
+        /**
+         * Volvemos a asignar el post al query para evitar 
+         * problemas con otros módulos.
+         */
+        function reset_cpt() {
+            global $wp_query;
+            if (!is_admin() && $wp_query->is_main_query() && $wp_query->is_singular()) {
+                $wp_query->set('post_type', get_post_type());
+            }
         }
 
         /*
