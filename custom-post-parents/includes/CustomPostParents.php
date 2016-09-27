@@ -7,6 +7,7 @@ if (!defined('ABSPATH')) {
 if (!class_exists('CustomPostParents')) {
 
     class CustomPostParents {
+        var $post_type=FALSE;
 
         public static function Instance() {
             static $inst = null;
@@ -23,6 +24,7 @@ if (!class_exists('CustomPostParents')) {
             add_filter('parse_query', array(&$this, 'set_array_cpt'));
             add_filter('rewrite_rules_array', array(&$this, 'clear_rewrites'));
             add_filter('register_post_type_args', array(&$this, 'update_post_types'), 10, 2);
+            add_action('the_posts', array(&$this, 'prefilter_posts'), 10, 2);
             add_action('the_post', array(&$this, 'reset_cpt'));
         }
 
@@ -70,12 +72,41 @@ if (!class_exists('CustomPostParents')) {
             );
         }
 
+        function prefilter_posts($posts,$query){
+            global $wp;
+            if (!is_admin() && $query->is_main_query() && $query->is_singular()) {
+                //Revisamos si algún post tiene la url actual
+                //Y lo colocamos como primer elemento del listado de posts
+                $url= home_url(add_query_arg(array(), $wp->request)) . '/';
+                $match_post=FALSE;
+                $not_match_posts=array();
+                foreach($posts AS $p){
+                    $permalink= get_permalink($p);
+                    if (!$match_post && $permalink && strcmp($permalink, $url) == 0) {
+                        $match_post=$p;
+                    }else{
+                        $not_match_posts[]=$p;
+                    }
+                }
+                if($match_post){
+                    //Aprovechamos para asignar el post type correcto lo antes posible 
+                    //Esto da compatibilidad de otros plugins que ejecuten filters
+                    $query->set('post_type', $match_post->post_type);
+                    array_unshift($not_match_posts, $match_post);
+                    $posts=$not_match_posts;
+                }
+            }
+            return $posts;
+            
+        }
+        
         /*
          * Incluye todos los tipos de post para la consulta que obtiene el post solicitado (solamente en el frontend)
          */
 
         function set_array_cpt($query) {
             if (!is_admin() && $query->is_main_query() && $query->is_singular()) {
+                $this->post_type=get_post_type();
                 $query->set('post_type', "any");
             }
             return $query;
@@ -88,6 +119,8 @@ if (!class_exists('CustomPostParents')) {
         function reset_cpt() {
             global $wp_query;
             if (!is_admin() && $wp_query->is_main_query() && $wp_query->is_singular()) {
+                $pt=get_post_type();
+                $pt2=$this->post_type;
                 $wp_query->set('post_type', get_post_type());
             }
         }
