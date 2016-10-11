@@ -37,12 +37,17 @@ if (!class_exists('CustomPostParents')) {
         }
 
         function clear_rewrites($rules) {
-            $optionSchemas = CustomPostParentsGlobal::instance()->get_post_type_schema();
             //Eliminamos los rewrites generados por los post types sobre los que trabajamos
+            //Excepto sobre páginas que tiene los rewrites correctos
+            $optionSchemas = CustomPostParentsGlobal::instance()->get_post_type_schema();
+            //Quitamos el page ya que afecta al regex al tener todos un parametro de paginado
+            //Además page tiene ya los rewrites correctos
+            unset($optionSchemas["page"]);
             if (!empty($optionSchemas)) {
-                $regexp = "/" . join("|", array_keys($optionSchemas)) . "=/";
+                $regexp = "/\\b(" . join("|", array_keys($optionSchemas)) . ")=/";
                 foreach ($rules as $rule => $rewrite) {
                     if (preg_match($regexp, $rewrite)) {
+                        echo "Eliminamos ".$rules[$rule]."<br/>";
                         unset($rules[$rule]);
                     }
                 }
