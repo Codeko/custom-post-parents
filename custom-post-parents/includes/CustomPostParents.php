@@ -30,7 +30,7 @@ if (!class_exists('CustomPostParents')) {
 
         function update_post_types($args, $post_type) {
             $optionSchemas = CustomPostParentsGlobal::instance()->get_post_type_schema();
-            if (array_key_exists($post_type, $optionSchemas)) {
+            if (array_key_exists($post_type, $optionSchemas) && isset($args["rewrite"]) && isset($args["rewrite"]["slug"])) {
                 $args["rewrite"]["slug"] = "/";
             }
             return $args;
