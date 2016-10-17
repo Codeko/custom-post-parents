@@ -47,7 +47,6 @@ if (!class_exists('CustomPostParents')) {
                 $regexp = "/\\b(" . join("|", array_keys($optionSchemas)) . ")=/";
                 foreach ($rules as $rule => $rewrite) {
                     if (preg_match($regexp, $rewrite)) {
-                        echo "Eliminamos ".$rules[$rule]."<br/>";
                         unset($rules[$rule]);
                     }
                 }
