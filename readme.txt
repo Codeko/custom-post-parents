@@ -22,7 +22,7 @@ __Post types rewrite slugs will be ignored__
 
 == Installation ==
 
-1. Upload the plugin files to the `/wp-content/plugins/plugin-name` directory, or install the plugin through the WordPress plugins screen directly.
+1. Upload the plugin files to the `/wp-content/plugins/custom-post-parents` directory, or install the plugin through the WordPress plugins screen directly.
 1. Activate the plugin through the 'Plugins' screen in WordPress
 1. Use the Settings->Custom Post Parents screen to configure the plugin and set the post parent of each post type
 
