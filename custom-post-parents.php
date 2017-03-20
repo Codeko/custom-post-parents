@@ -1,7 +1,7 @@
 <?php
 /* Plugin Name: Custom Post Parents
   Description: Allow to set any post type as post parent
-  Version: 1.0
+  Version: 0.1
   License: GPLv2
  */
 
