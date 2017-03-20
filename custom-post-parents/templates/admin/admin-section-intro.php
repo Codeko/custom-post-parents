@@ -1,2 +1,2 @@
-<p><?php _e('Dispone de una lista con los custom post types que tienen habilitado el parametro "hierarchical". Seleccione que padre(s) desea permitir para cada custom post type. ') ?></p>
+<p><?php _e('Set the post types that will be available as post parent. Remember that only hierachical post parents are shown.') ?></p>
 

@@ -5,7 +5,6 @@
 
         $ul.on('click', '.ntdelbutton', function () {
             $(this).parents('span').remove();
-            console.log("test");
         });
 
         var cache = {};
@@ -33,7 +32,6 @@
                 var type = ui.item.value;
                 var $input = $(event.target);
                 var section = $input.data('section');
-
                 var selectedElements = $('input[name="custom-post-parents-post_types['+section+'][]"]');
                 var currentVals = [];
                 $.each(selectedElements, function () {
@@ -44,7 +42,7 @@
                     var item = $([
                         '<span>',
                         '<input name="custom-post-parents-post_types['+section+'][]" type="hidden" value="'+type+'" />',
-                        '<a  class="ntdelbutton">X</a>&nbsp;',
+                        '<a class="ntdelbutton"><span class="remove-tag-icon" aria-hidden="true"></span></a>&nbsp;',
                         label,
                         '</span>'
                     ].join(''));

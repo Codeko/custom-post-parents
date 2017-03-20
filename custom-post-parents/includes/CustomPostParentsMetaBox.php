@@ -46,13 +46,13 @@ class CustomPostParentsMetaBox {
         ?>
     <label class="screen-reader-text" for="parent_id"><?php _e('Parent') ?></label>
     <?php
-        echo "<p><strong>" . __('Padre actual', 'custom-post-parents') . ":</strong>
+        echo "<p><strong>" . __('Parent', 'custom-post-parents') . ":</strong>
                 <span id='parent_id_status'>
                 " . ($post->post_parent ? get_the_title($post->post_parent) : __('(no parent)') ) . "
                 </span></p>
                 <input type='hidden' id='parent_id' name='parent_id' value='{$post->post_parent}' />";
 
-        echo "<p><strong>" . __('Tipo de post') . ": </strong> 
+        echo "<p><strong>" . __('Post type') . ": </strong> 
         <select name='my_meta_box_post_type' id='my_meta_box_post_type'>";
         $post_types = get_post_types('', 'objects');
         foreach ($post_types as $post_type) {
@@ -79,7 +79,7 @@ class CustomPostParentsMetaBox {
                 'selected' => $post->post_parent,
                 'name' => 'selection-parent-id-' . $pageType,
                 'id' => 'selection-parent-id-' . $pageType,
-                'show_option_none' => __("Ninguno"),
+                'show_option_none' => __("None"),
                 'option_none_value' => '0',
                 'hierarchical' => 0,
                 'sort_column' => 'menu_order, post_title',

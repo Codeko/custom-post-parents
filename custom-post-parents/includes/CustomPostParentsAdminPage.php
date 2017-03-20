@@ -59,7 +59,7 @@ class CustomPostParentsAdminPage {
         // Add the field with the names and function to use for our new
         // settings, put it in our new section
         add_settings_field(
-                'custom-post-parents-post_types', __('Configuracion de CPTs', 'custom-post-parents'), array($this, 'settings_field_view'), self::ADMIN_PAGE_NAME, 'custom-post-parents-setting_section'
+                'custom-post-parents-post_types', __('Post parent configuration', 'custom-post-parents'), array($this, 'settings_field_view'), self::ADMIN_PAGE_NAME, 'custom-post-parents-setting_section'
         );
         // Register the setting for $_POST to work.
         register_setting(self::ADMIN_PAGE_NAME, 'custom-post-parents-post_types');
@@ -76,7 +76,7 @@ class CustomPostParentsAdminPage {
 
     public function admin_menu() {
         add_options_page(
-                __('Post parents', 'custom-post-parents'), __('Post parents', 'custom-post-parents'), 'manage_options', 'custom-post-parents-admin-menu', array($this, 'options')
+                __('Custom Post Parents', 'custom-post-parents'), __('Custom Post Parents', 'custom-post-parents'), 'manage_options', 'custom-post-parents-admin-menu', array($this, 'options')
         );
     }
 
@@ -87,7 +87,6 @@ class CustomPostParentsAdminPage {
         }
         if (isset($_GET['settings-updated']) && $_GET['settings-updated']) {
             // We need to rewrite.
-
             flush_rewrite_rules();
         }
 
