@@ -15,7 +15,9 @@
         <?php endforeach ?>
         </div>
 
-        <input id="cpt-f-<?php echo $superPostType;?>" placeholder="<?php _e('Add custom post type','custom-post-parents')?>" type="text" data-section="<?php echo $superPostType ?>" class="custom-post-parents-selectlist-add" />
+        <!--<input id="cpt-f-<?php echo $superPostType;?>" placeholder="<?php _e('Add custom post type','custom-post-parents')?>" type="text" data-section="<?php echo $superPostType ?>" class="custom-post-parents-selectlist-add" />-->
+    <select id="cpt-f-<?php echo $superPostType;?>" placeholder="<?php _e('Add custom post type','custom-post-parents')?>" type="text" data-section="<?php echo $superPostType ?>" class="custom-post-parents-selectlist-add">
+    </select>
     </p>
 <?php endforeach ?>
 
