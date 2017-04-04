@@ -19,24 +19,22 @@ class CustomPostParentsAdminPage {
             if ('settings_page_custom-post-parents-admin-menu' != $hook_suffix){
                 return;
             }
-             array('jquery');
-            wp_enqueue_script( 'custom_post_parents_admin', plugins_url('/js/custom-post-parents-admin.js', CUSTOM_POST_PARENTS_FILE));
-            $parents = array(
+             
+            wp_enqueue_script( 'custom_post_parents_admin', plugins_url('/js/custom-post-parents-admin.js', CUSTOM_POST_PARENTS_FILE),array('jquery'));
+            $postParentConfig = array(
                 'selected' => CustomPostParentsGlobal::instance()->get_post_type_schema(),
                 'lookup' => CustomPostParentsGlobal::instance()->get_lookup_schema(),
-                'first_option_select'=>__("Choose option",'custom-post-parents')
+                'defalutOption'=>__("Choose option",'custom-post-parents')
             );
-            wp_localize_script('custom_post_parents_admin','parents',$parents);
+            wp_localize_script('custom_post_parents_admin','postParentConfig',$postParentConfig);
         });
         add_filter('plugin_action_links_' . plugin_basename(CUSTOM_POST_PARENTS_PATH) . '/custom-post-parents.php', array($this, 'filter_plugin_links'));
-
     }
     public function filter_plugin_links($links) {
         $settings_link = '<a href="' . get_admin_url(null, 'options-general.php?page=' . self::ADMIN_PAGE_NAME) . '">Settings</a>';
         array_unshift($links, $settings_link);
         return $links;
     }
-
     public function admin_init() {
 
 

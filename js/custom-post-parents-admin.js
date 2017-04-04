@@ -1,57 +1,63 @@
 
 ;(function ($) {
     $(function () {
+        $('.custom-post-parents-selectlist-add').removeAttr("disabled");
         var $ul = $('.custom-post-parents-selectedlist');
         $ul.on('click','.ntdelbutton',function(){
-            var currentItem=$(this);
-            var section=currentItem.data("section");
-            var currentSelect=$("select[data-section='"+section+"']");
-            var idOption=currentItem.parent().text()+"_"+section;
-            currentSelect.find("#"+idOption).show();
-            var hiddenchildren=currentSelect.find(":hidden").length;
-            var children=currentSelect.children().length-1;
-            if(hiddenchildren<children)
-                currentSelect.removeAttr("disabled")
-            currentItem.parents('span').remove();
+            var $currentItem=$(this);
+            var $section=$currentItem.data("section");
+            var ind=$currentItem.attr("ind");
+            var $currentSelect=$("select[data-section='"+$section+"']");
+            $currentSelect.find("option[ind="+ind+"]").show();
+            var hiddenChildrenSelect=$currentSelect.find(":hidden").length;
+            var childrenSelect=$currentSelect.children().length-1;
+            if(hiddenChildrenSelect<childrenSelect){
+                $currentSelect.removeAttr("disabled");
+            }
+            $currentItem.parents('span').remove();
         });
+        var ind=0;
         $.each($("select"),function(i,v){
             var section=$("#"+v.id).data("section");
-            var it=$("<option>").attr("name","custom-post-parents-post_types").attr('id','defecto_'+section);
-            it.text(parents.first_option_select);
+            var it=$("<option>").attr("name","custom-post-parents-post_types").attr('id',ind+'_'+section).attr("ind",ind);
+            it.text(postParentConfig.defalutOption);
             $("#"+v.id).append(it);
-            $.each(parents.lookup,function(i,c){
-                var id=c+"_"+section;
-                var it=$("<option>").attr("name","custom-post-parents-post_types").attr("id",id);
+            ind++;
+            $.each(postParentConfig.lookup,function(o,c){
+                var id=ind+"_"+section;
+                var it=$("<option>").attr("name","custom-post-parents-post_types").attr("id",id).attr("ind",ind);
                 it.text(c);
                 $("#"+v.id).append(it);
+                ind++;
             })
-        })
-
-        $('.custom-post-parents-selectlist-add').change(function(event){
-            var currentItem=$(this)
-            var section=currentItem.data("section")
-            var selectedElements = $('input[name="custom-post-parents-post_types['+section+'][]"]');
+        });
+        $('.custom-post-parents-selectlist-add').change(function(){
+            var $currentItem=$(this);
+            var $section=$currentItem.data("section");
+            var $selectedElements = $('input[name="custom-post-parents-post_types['+$section+'][]"]');
             var currentVals = [];
-            var currentValue=currentItem.val();
-            if(currentValue!=parents.first_option_select)
-            $(" option:selected",this).hide();
-            var hiddenchildren=$(":hidden",this).length;
-            var children=$(this).children().length-1
-            if(hiddenchildren==children)
-                currentItem.attr("disabled","disabled");
-            $.each(selectedElements, function (i,v) {
-                    currentVals.push(currentItem.val());
+            var currentValue=$currentItem.val();
+            var ind=$("option:selected",this).attr("ind");
+            if(currentValue!=postParentConfig.defalutOption){
+                $("option:selected",this).hide();
+            }
+            var hiddenChildrenSelect=$(":hidden",this).length;
+            var childrenSelect=$(this).children().length-1;
+            if(hiddenChildrenSelect==childrenSelect){
+                $currentItem.attr("disabled","disabled");
+            }
+            $.each($selectedElements, function() {
+                    currentVals.push($currentItem.val());
                 });
-            var ite = $([
+            var $ite = $([
                 '<span>',
-                '<input name="custom-post-parents-post_types['+section+'][]" type="hidden" value="'+currentValue+'"/>',
-                "<a name='"+currentValue+"'class='ntdelbutton' data-section='"+section+"'><span class='remove-tag-icon' aria-hidden='true'></span></a>",
+                '<input name="custom-post-parents-post_types['+$section+'][]" type="hidden" value="'+currentValue+'"/>',
+                "<a name='"+currentValue+"'class='ntdelbutton' ind='"+ind+"' data-section='"+$section+"'><span class='remove-tag-icon' aria-hidden='true'></span></a>",
                 currentValue,
                 '</span>'
                 ].join(''));
-                $("div[data-section='"+section+"']").append(ite);
-            $(":nth-child(1)",this).attr("selected",true);
-
+                $("div[data-section='"+$section+"']").append($ite);
+            $(":first-child",this).attr("selected",true);
         });
     });
 })(jQuery);
