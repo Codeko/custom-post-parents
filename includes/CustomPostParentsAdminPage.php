@@ -15,36 +15,26 @@ class CustomPostParentsAdminPage {
     private function __construct() {
         add_action('admin_menu', array($this, 'admin_menu'));
         add_action('admin_init', array($this, 'admin_init'));
-
-
         add_action('admin_enqueue_scripts', function ($hook_suffix) {
             if ('settings_page_custom-post-parents-admin-menu' != $hook_suffix){
                 return;
             }
-            wp_enqueue_script('custom-post-parents-apt-admin-ajax-script', 
-                    plugins_url('/js/custom-post-parents-admin.js', CUSTOM_POST_PARENTS_FILE), 
-                    array('jquery','jquery-ui-autocomplete')
+             array('jquery');
+            wp_enqueue_script( 'custom_post_parents_admin', plugins_url('/js/custom-post-parents-admin.js', CUSTOM_POST_PARENTS_FILE));
+            $parents = array(
+                'selected' => CustomPostParentsGlobal::instance()->get_post_type_schema(),
+                'lookup' => CustomPostParentsGlobal::instance()->get_lookup_schema(),
+                'first_option_select'=>__("Choose option",'custom-post-parents')
             );
+            wp_localize_script('custom_post_parents_admin','parents',$parents);
         });
-
-        if (is_admin()) {
-            add_action('wp_ajax_custom-post-parents_search_post_types', array($this, 'ajax_search_post_types'));
-        }
         add_filter('plugin_action_links_' . plugin_basename(CUSTOM_POST_PARENTS_PATH) . '/custom-post-parents.php', array($this, 'filter_plugin_links'));
-    }
 
+    }
     public function filter_plugin_links($links) {
         $settings_link = '<a href="' . get_admin_url(null, 'options-general.php?page=' . self::ADMIN_PAGE_NAME) . '">Settings</a>';
         array_unshift($links, $settings_link);
         return $links;
-    }
-
-    public function ajax_search_post_types() {
-        $data = array(
-            'selected' => CustomPostParentsGlobal::instance()->get_post_type_schema(),
-            'lookup' => CustomPostParentsGlobal::instance()->get_lookup_schema()
-        );
-        wp_send_json_success($data);
     }
 
     public function admin_init() {
@@ -63,6 +53,7 @@ class CustomPostParentsAdminPage {
         );
         // Register the setting for $_POST to work.
         register_setting(self::ADMIN_PAGE_NAME, 'custom-post-parents-post_types');
+        load_plugin_textdomain('custom-post-parents', false,"custom-post-parents/lang");
     }
 
     public function settings_field_view() {
