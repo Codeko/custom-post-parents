@@ -20,11 +20,11 @@ class CustomPostParentsAdminPage {
                 return;
             }
              
-            wp_enqueue_script( 'custom_post_parents_admin', plugins_url('/js/custom-post-parents-admin.js', CUSTOM_POST_PARENTS_FILE),array('jquery'));
+            wp_enqueue_script( 'custom_post_parents_admin', plugins_url('/js/custom-post-parents-admin.js', CUSTOM_POST_PARENTS_FILE),array('jquery'),"0.1");
             $postParentConfig = array(
                 'selected' => CustomPostParentsGlobal::instance()->get_post_type_schema(),
                 'lookup' => CustomPostParentsGlobal::instance()->get_lookup_schema(),
-                'defalutOption'=>__("Choose option",'custom-post-parents')
+                'defaultOption'=>__("Choose option",'custom-post-parents')
             );
             wp_localize_script('custom_post_parents_admin','postParentConfig',$postParentConfig);
         });

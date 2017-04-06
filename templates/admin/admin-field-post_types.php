@@ -6,7 +6,7 @@
         <?php foreach($info['values'] as $postType): ?>
             <span>
                 <input name="custom-post-parents-post_types[<?php echo $superPostType?>][]" type="hidden" value="<?php echo $postType; ?>" />
-                <a  class="ntdelbutton" data-section="<?php echo $superPostType;?>" ind=" "><span class="remove-tag-icon" aria-hidden="true"></span></a>&nbsp;
+                <a  class="ntdelbutton" data-section="<?php echo $superPostType;?>" data-ind=" "><span class="remove-tag-icon" aria-hidden="true"></span></a>&nbsp;
                 <?php $cont++;?>
                 <?php if (isset($lookup[$postType])): ?>
                     <?php echo $lookup[$postType] ?>
