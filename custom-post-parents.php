@@ -1,6 +1,8 @@
 <?php
 /* Plugin Name: Custom Post Parents
   Description: Allow to set any post type as post parent
+  Text Domain: custom-post-parents
+  Domain Path: /lang
   Version: 0.1
   License: GPLv2
  */
