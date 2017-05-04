@@ -24,17 +24,20 @@ class CustomPostParentsGlobal {
      * @return string
      */
     public function render($view, $args = array(), $return = false) {
-        if ($return)
+        if ($return) {
             ob_start();
+        }
         extract($args);
 
         $file = '/templates/' . $view;
         $found = locate_template('custom-post-parents' . DIRECTORY_SEPARATOR . $file);
-        if (!$found)
+        if (!$found) {
             $found = dirname(__DIR__) . $file;
+        }
         include $found;
-        if ($return)
+        if ($return) {
             return ob_get_clean();
+        }
     }
 
     public function get_option_schema() {

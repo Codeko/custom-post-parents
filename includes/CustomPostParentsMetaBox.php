@@ -28,7 +28,7 @@ class CustomPostParentsMetaBox {
         $isFirst = true;
         foreach ($optionSchemas as $ownerPageType => $schema) {
             add_meta_box(
-                    'custom-post-parents-metabox','page' == $ownerPageType ? __('Page Attributes') : __('Attributes'), array($this, 'add_meta_boxes_add_callback'), $ownerPageType, 'side', 'high', array(
+                    'custom-post-parents-metabox', 'page' == $ownerPageType ? __('Page Attributes') : __('Attributes'), array($this, 'add_meta_boxes_add_callback'), $ownerPageType, 'side', 'high', array(
                 'schema' => $schema
                     )
             );
@@ -44,8 +44,8 @@ class CustomPostParentsMetaBox {
 
         $isFirst = true;
         ?>
-    <label class="screen-reader-text" for="parent_id"><?php _e('Parent') ?></label>
-    <?php
+        <label class="screen-reader-text" for="parent_id"><?php _e('Parent') ?></label>
+        <?php
         echo "<p><strong>" . __('Parent', 'custom-post-parents') . ":</strong>
                 <span id='parent_id_status'>
                 " . ($post->post_parent ? get_the_title($post->post_parent) : __('(no parent)') ) . "
@@ -57,14 +57,9 @@ class CustomPostParentsMetaBox {
         $post_types = get_post_types('', 'objects');
         foreach ($post_types as $post_type) {
             if ($post_type->hierarchical == true && in_array($post_type->name, $schema["values"])) {
-                echo "<option value = '";
-                echo esc_attr($post_type->name);
-                echo "' ";
                 $pater = get_post_type($post->post_parent);
-                if ($pater === $post_type->name) {
-                    echo "selected";
-                }
-                echo ">";
+                $selected = ($pater === $post_type->name) ? "selected" : "";
+                echo "<option value = '" . esc_attr($post_type->name) . "' $selected >";
                 echo esc_html($post_type->label);
                 echo "</option>";
             }
@@ -72,10 +67,10 @@ class CustomPostParentsMetaBox {
         echo "</select>";
         echo "</p>";
 
-        foreach ($schema['values'] as $k => $pageType) {
+        foreach ($schema['values'] as $k => $pageType) :
             $pages = wp_dropdown_pages(array(
                 'post_type' => $pageType,
-                'exclude_tree'     => $post->ID,
+                'exclude_tree' => $post->ID,
                 'selected' => $post->post_parent,
                 'name' => 'selection-parent-id-' . $pageType,
                 'id' => 'selection-parent-id-' . $pageType,
@@ -85,8 +80,8 @@ class CustomPostParentsMetaBox {
                 'sort_column' => 'menu_order, post_title',
                 'echo' => 0)
             );
-// Only ONCE:
-            if ($isFirst) {
+            // Only ONCE:
+            if ($isFirst):
                 ?>
                 <script>
                     jQuery(function ($) {
@@ -102,7 +97,7 @@ class CustomPostParentsMetaBox {
                     });
                 </script>
                 <?php
-            }
+            endif;
 
 
             $label = $lookup[$pageType];
@@ -115,18 +110,18 @@ class CustomPostParentsMetaBox {
             echo "</p></div>";
 
             $isFirst = false;
-        }
+        endforeach;
         ?><script>
-            jQuery(function ($) {
-                var tipo = $('#my_meta_box_post_type :selected').val();
-                $('.padres-containers').hide();
-                $("#" + tipo + "-container").show();
-                $('#my_meta_box_post_type').click(function () {
-                    var tipo = $('#my_meta_box_post_type :selected').val();
-                    $('.padres-containers').hide();
-                    $("#" + tipo + "-container").show();
-                });
-            });
+                    jQuery(function ($) {
+                        var tipo = $('#my_meta_box_post_type :selected').val();
+                        $('.padres-containers').hide();
+                        $("#" + tipo + "-container").show();
+                        $('#my_meta_box_post_type').click(function () {
+                            var tipo = $('#my_meta_box_post_type :selected').val();
+                            $('.padres-containers').hide();
+                            $("#" + tipo + "-container").show();
+                        });
+                    });
         </script>
         <hr/>
         <?php

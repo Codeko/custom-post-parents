@@ -76,7 +76,7 @@ if (!class_exists('CustomPostParents')) {
             );
         }
 
-        function prefilter_posts($posts,$query){
+        function prefilter_posts($posts, $query){
             global $wp;
             if (!is_admin() && $query->is_main_query() && $query->is_singular()) {
                 //Revisamos si algún post tiene la url actual
@@ -123,8 +123,6 @@ if (!class_exists('CustomPostParents')) {
         function reset_cpt() {
             global $wp_query;
             if (!is_admin() && $wp_query->is_main_query() && $wp_query->is_singular()) {
-                $pt=get_post_type();
-                $pt2=$this->post_type;
                 $wp_query->set('post_type', get_post_type());
             }
         }

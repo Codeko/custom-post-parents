@@ -1,7 +1,7 @@
-=== Plugin Name ===
+=== Custom Posts Parents ===
 Contributors: codeko
 Donate link: http://codeko.com
-Tags: post type, parent, hierachy
+Tags: post type, parent, hierarchy
 Requires at least: 4.4
 Tested up to: 4.7
 Stable tag: trunk
@@ -23,8 +23,8 @@ __Post types rewrite slugs will be ignored__
 == Installation ==
 
 1. Upload the plugin files to the `/wp-content/plugins/custom-post-parents` directory, or install the plugin through the WordPress plugins screen directly.
-1. Activate the plugin through the 'Plugins' screen in WordPress
-1. Use the Settings->Custom Post Parents screen to configure the plugin and set the post parent of each post type
+1. Activate the plugin through the 'Plugins' screen in WordPress.
+1. Use the Settings → Custom Post Parents screen to configure the plugin and set the post parent of each post type.
 
 
 == Frequently Asked Questions ==
